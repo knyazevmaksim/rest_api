@@ -17,6 +17,7 @@ var func={
         data.push({"id":newId,"data":newData});
         content=JSON.stringify(data);
         fs.writeFileSync("data/data.json",content);
+        response/*.status(200)*/.send({id:newId, data:newData});
     },
     read:function(request,response){
         var content=fs.readFileSync("data/data.json","utf-8");
@@ -59,6 +60,7 @@ var func={
                 data[i].data=newData;
                 content=JSON.stringify(data);
                 fs.writeFileSync("data/data.json",content);
+                response.send({id:id, data:newData});
                 break;
             }
         }
@@ -71,12 +73,15 @@ var func={
         var content=fs.readFileSync("data/data.json","utf-8");
         var data=JSON.parse(content);
         let flag=false;
+        var copy={};
         for(let i=0; i<data.length; i++)
         {
             if(data[i].id==id)
             {
+                copy=data[i];
                 data.splice(i,1);
                 flag=true;
+                response.send(copy);
                 break;
             }
         }
